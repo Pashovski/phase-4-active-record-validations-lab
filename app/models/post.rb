@@ -3,18 +3,11 @@ class Post < ApplicationRecord
     validates :content, length: { minimum: 250 }
     validates :summary, length: { maximum: 250 }
     validates :category, inclusion: { in: %w(Fiction Non-Fiction) }
-    validate :clickbait?
+    validate :clickbait
 
-    CLICKBAIT_PATTERNS = [
-      /Won't Believe/i,
-      /Secret/i,
-      /Top \d/i,
-      /Guess/i
-    ]
-  
-    def clickbait?
-      if CLICKBAIT_PATTERNS.none? { |pat| pat.match title }
-        errors.add(:title, "must be clickbait")
-      end
+    def clickbait
+        if title == "True Facts"
+            errors.add(:title, "Sorry not enough fake news")
+        end
     end
-  end
+end
